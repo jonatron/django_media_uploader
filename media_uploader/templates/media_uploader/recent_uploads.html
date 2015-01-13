@@ -1,0 +1,29 @@
+<table class="border-table admin">
+    <tr>
+        <th>Thumnail</th>
+        <th>File</th>
+        <th></th>
+    </tr>
+    {% for upload in uploads %}
+        <tr>
+            <td>
+                <span class="id" style="display:none">{{ upload.id }}</span>
+                <span class="url" style="display:none">{{ upload.get_absolute_url }}</span>
+                {% if upload.is_image %}
+                    <img src="{% url 'media_uploader:media_uploader_thumbnail' upload.id %}">
+                {% endif %}
+            </td>
+            <td>
+                <span class="filename">
+                    <a href="{{ upload.get_absolute_url }}">{{ upload.original_filename }}</a>
+                </span> - {{ upload.uploaded }} 
+            </td>
+            <td>
+                <a href="#" class="insert">Insert</a> &nbsp;&nbsp;
+                <a href="#" class="insert_resized">Insert (resized and clickable)</a> 
+                <a href="#" class="set_logo">Set as logo</a> &nbsp;&nbsp;
+                <a href="#" class="delete">Delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
