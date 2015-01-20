@@ -11,6 +11,7 @@
                 <span class="url" style="display:none">{{ upload.get_absolute_url }}</span>
                 {% if upload.is_image %}
                     <img src="{% url 'media_uploader:media_uploader_thumbnail' upload.id %}">
+                    <span class="resize_url" style="display:none">{% url 'media_uploader:media_uploader_resize' upload.id 1 2 %}</span>
                 {% endif %}
             </td>
             <td>
@@ -19,9 +20,11 @@
                 </span> - {{ upload.uploaded }} 
             </td>
             <td>
+                {% if upload.is_image %}
                 <a href="#" class="insert">Insert</a> &nbsp;&nbsp;
                 <a href="#" class="insert_resized">Insert (resized and clickable)</a> 
-                <a href="#" class="set_logo">Set as logo</a> &nbsp;&nbsp;
+                <a href="#" class="set_thumbnail">Set as thumbnail</a> &nbsp;&nbsp;
+                {% endif %}
                 <a href="#" class="delete">Delete</a>
             </td>
         </tr>

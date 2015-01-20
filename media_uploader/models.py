@@ -29,4 +29,4 @@ class Upload(models.Model):
         return ''.join([settings.MEDIA_ROOT, '/', chunks_subdir, '/', self.path, '/', self.original_filename])
 
     def is_image(self):
-        return self.extension.lower() in ['.jpg', '.gif', '.png']
+        return self.extension.lower() in ['.jpg', '.jpeg', '.gif', '.png']

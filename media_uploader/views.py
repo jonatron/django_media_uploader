@@ -77,3 +77,26 @@ def thumbnail(request, upload_id):
     image.save(out, "JPEG")
 
     return HttpResponse(out.getvalue(), content_type='image/jpeg')
+
+def resize(request, upload_id, width, height):
+    try:
+        upload = Upload.objects.get(pk=upload_id)
+    except Upload.DoesNotExist:
+        return HttpResponse("error")
+    image_path = upload.get_absolute_file_path()
+    if not os.path.exists(image_path):
+        return HttpResponse("error")
+    f = open(image_path, "rb")
+    image = Image.open(f)
+    width = int(width)
+    height = int(height)
+    image.thumbnail((width, height), Image.ANTIALIAS)
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+    new_image_path = image_path + "_resized_%s.jpg" % width
+    new_image_url = upload.get_absolute_url() + "_resized_%s.jpg" % width
+    new_f = open(new_image_path, "wb")
+    image.save(new_f, "JPEG")
+    new_f.close()
+    f.close()
+    return HttpResponse(new_image_url)
