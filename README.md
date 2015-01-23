@@ -10,13 +10,13 @@ Template Tag:
 
 Add to your URLs:
 
-    url(r'', include('media_cms_core.urls', namespace='mcc')),
+    url(r'^media_uploader/', include('media_uploader.urls', namespace='media_uploader')),
 
 Add to your INSTALLED_APPS:
 
     'media_uploader',
 
-Example JS for showing recent uploads:
+Example JS for showing recent uploads: (TODO: add recently_uploaded view)
 
     $(function() {
         function refresh_recent_uploads() {
