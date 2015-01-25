@@ -3,6 +3,10 @@ Django Media Uploader
 
 A resuable django app that provides views, models and template tags to implement resumable HTML5 uploads. Uploads can be associated with any other model instance. Uses [resumable.js](http://www.resumablejs.com/). 
 
+Before installing pillow, please run:
+sudo apt-get install libjpeg-dev
+to ensure jpeg support
+
 Template Tag:
 
     {% load media_uploader %}
