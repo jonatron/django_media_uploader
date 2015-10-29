@@ -100,3 +100,9 @@ def resize(request, upload_id, width, height):
     new_f.close()
     f.close()
     return HttpResponse(new_image_url)
+
+def upload_delete(request, id):
+    up = Upload.objects.get(pk=id)
+    os.remove(up.get_absolute_file_path())
+    up.delete()
+    return HttpResponse("deleted")

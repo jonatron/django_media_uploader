@@ -1,4 +1,5 @@
 {% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'media_uploader/style.css' %}">
 <script src="{% static 'media_uploader/resumable.js' %}"></script>
 <script>
 (function($) {
@@ -25,19 +26,41 @@
         });
         r.assignBrowse($('#{{ id }}_input_file'));
         r.on('fileAdded', function(file) {
-            r.upload();
-            $("form").addClass("{{ name }}_disabled");
+            var template =
+            '<div data-uniqueid="' + file.uniqueIdentifier + '">' +
+            '<span class="fileName">' + file.fileName + ' (' + file.file.type + ')' + '</span>' +
+            '<progress class="meter" value="0" max="1">' +
+            '</div>';
+
+            $('#filelist').append(template);
         });
+
+        $(document).on('click', '.deleteFile', function () {
+            var self = $(this),
+                parent = self.parent(),
+                identifier = parent.data('uniqueid'),
+                file = r.getFromUniqueIdentifier(identifier);
+
+            r.removeFile(file);
+            parent.remove();
+        });
+
+        $(document).on('click', '#uploadFiles', function () {
+            r.upload();
+        });
+
         r.on('fileSuccess', function(file, message) {
-            $('#{{ id }}').val(message);
-            $("#{{ id }}_uploaded_status").html(message + ' Uploaded');
+            $('[data-uniqueId=' + file.uniqueIdentifier + ']').find('.meter').addClass('success');
+            //todo: check if all uploaded
             $("form").removeClass("{{ name }}_disabled");
+
+            if (typeof fileSuccessCallback == 'function') { fileSuccessCallback(); }
         });
         r.on('fileError', function(file, message) {
             $("#{{ id }}_uploaded_status").html(message);
         });
-        r.on('progress', function(file, message) {
-            $('#{{ id }}_progress').val(r.progress());
+        r.on('fileProgress', function(file) {
+            $('[data-uniqueId=' + file.uniqueIdentifier + ']').find('.meter').val(file.progress());
         });
         
     });
